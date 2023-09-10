@@ -1,23 +1,52 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, classification_report
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder
-from lightgbm import LGBMClassifier
-import os
+import pickle
+from spotify_api import get_tracks, get_model_features
 
+RESULTS = {
+    0: "alt-rock",
+    1: "hard-rock",
+    2: "j-rock",
+    3: "psych-rock",
+    4: "punk-rock",
+    5: "rock-n-roll",
+    6: "rock",
+    7: "rockabilly"
+}
 
 # Page
 st.set_page_config(page_title="Spotify Song Genre Classifier", page_icon=":musical_notes", layout="wide")
 
 
 # HEADER SECTION 
+st.header("Spotify Gender Classification Model")
 st.subheader("Let's choose a song and see the model identify a genre")
 st.write("Check out my GitHub repository : https://github.com/Benesp97/spotifysong_genre_classifier")
+st.divider()
 
-# PATH = os.path.join("..", "Data", "spotify_tracks.csv")
-# df = pd.read_csv(PATH)
-df = pd.read_csv('./spotify_tracks.csv')
-st.write(print(df.head(1)))
+input = st.text_input(label="Song name :", value="Stairway To Heaven", placeholder="Stairway To Heaven")
+
+
+if input != '':
+    list_of_songs = get_tracks(input)
+    st.info('Confirm the track from the Spotify Api to run the model', icon="ℹ️")
+    st.subheader("Please confirm the track")
+    confirmed_track = st.selectbox(label="", options=pd.DataFrame(list_of_songs), key="title")
+    selected_track_id = selected_track_id = next((song['id'] for song in list_of_songs if song['display_name'] == confirmed_track), None)
+    st.divider()
+
+    model_features = get_model_features(selected_track_id)
+
+    pickled_model = pickle.load(open("Code/model_spotify_classifier.pkl", 'rb'))
+    pick_pred = pickled_model.predict(np.array(model_features).reshape(1,-1))
+
+
+
+    # st.write(RESULTS[pick_pred])
+    genre = RESULTS[int(pick_pred)]
+    st.success(f'This is the genre for {confirmed_track}!', icon="💡")
+    st.success(genre, icon="✅")
+
+else:   
+    st.info('To get the results please enter the song name in the input above', icon="ℹ️")
