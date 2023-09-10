@@ -19,5 +19,5 @@ st.write("Check out my GitHub repository : https://github.com/Benesp97/spotifyso
 
 # PATH = os.path.join("..", "Data", "spotify_tracks.csv")
 # df = pd.read_csv(PATH)
-df = pd.read_csv('./Data/spotify_tracks.csv')
+df = pd.read_csv('./spotify_tracks.csv')
 st.write(print(df.head(1)))
