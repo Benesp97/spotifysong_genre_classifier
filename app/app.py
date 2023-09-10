@@ -1,10 +1,10 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score, classification_report
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder
-from lightgbm import LGBMClassifier
+#from sklearn.model_selection import train_test_split
+#from sklearn.metrics import accuracy_score, f1_score, classification_report
+#from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder
+#from lightgbm import LGBMClassifier
 import os
 
 
