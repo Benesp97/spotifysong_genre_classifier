@@ -117,5 +117,5 @@ def get_model_features(selected_track_id):
                 print(f"An error occurred while getting songs for id '{selected_track_id}': {str(e)}")
                 return ''
             
-def get_genre()
+def get_genre():
     pass
