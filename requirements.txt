@@ -4,3 +4,5 @@ pandas
 scikit-learn
 lightgbm
 requests
+pybase64
+python-dotenv

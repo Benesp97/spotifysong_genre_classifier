@@ -3,13 +3,17 @@ from requests import post, get
 import json
 import os
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
+
+
 def get_token():
-    # auth_string = client_id + ":" + client_secret
-    auth_string = "e30f5ab44195490a86f1b59997de172a" + ":" + "5b63579d5f164ae1bce0e671ed240a5f"
+    auth_string = client_id + ":" + client_secret
     auth_bytes = auth_string.encode("utf-8")
     auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
     
@@ -40,6 +44,11 @@ def call_spotify_api(url):
         return None  # Return None to indicate an error
     
 LIMIT_PER_PAGE = 10
+GENRES = ["alt-rock", "hard-rock", "j-rock", "psych-rock", "punk-rock", "rock-n-roll", "rock", "rockabilly"]
+
+# Define a function to check if a genre is in the list of target genres
+def is_genre_target(genres):
+    return any(genre in GENRES for genre in genres)
 
 # Define a function to get songs for a given name
 def get_tracks(name):
@@ -59,20 +68,25 @@ def get_tracks(name):
             if not track_id or not track_name:
                 continue
 
-            track = {
-                "display_name": track_name + " | " + track_artist,
-                "title": track_name,
-                "id": track_id,
-                "artist": track_artist
-            }
+            track_genre = call_spotify_api(f"https://api.spotify.com/v1/artists/{t.get('artists')[0]['id']}")
+            #print("\n\n TARGET \n:",track_genre['genres'], "\n\n")
 
 
+            if is_genre_target(track_genre['genres']):
+                track = {
+                    "display_name": track_name + " | " + track_artist,
+                    "title": track_name,
+                    "id": track_id,
+                    "artist": track_artist
+                }
+            
+            else:
+                print("It's not a rock song mate ! ")
 
             # track_features = call_spotify_api(f"https://api.spotify.com/v1/audio-features/{track_id}")
             # if track_features is not None:
             #     track = {"genre": genre, **track, **track_features}
             track_list.append(track)
-
         return track_list
     except Exception as e:
         print(f"An error occurred while getting songs for title '{name}': {str(e)}")
@@ -99,7 +113,7 @@ def get_model_features(selected_track_id):
                      track_features['liveness'],
                      track_features['tempo']
                 ]
-            
+
             except Exception as e:
                 print(f"An error occurred while getting songs for id '{selected_track_id}': {str(e)}")
-                return 'bite'
+                return ''
