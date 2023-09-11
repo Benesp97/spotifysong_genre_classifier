@@ -28,7 +28,16 @@ st.divider()
 
 st.warning(' You have to choose a rock song ! 🤘🎸', icon="⚠️")
 
-input = st.text_input(label="Song name :", value="", placeholder="Stairway To Heaven")
+if 'clicked' not in st.session_state:
+    st.session_state.clicked = False
+
+def click_button():
+    st.session_state.clicked = True
+
+def reset_on_new_title_input():
+    st.session_state.clicked = False
+
+input = st.text_input(label="Song name :", value="", placeholder="Stairway To Heaven", on_change=reset_on_new_title_input)
 
 try :
     if input != '':
@@ -37,19 +46,21 @@ try :
         st.subheader("Please confirm the track")
         confirmed_track = st.selectbox(label="", options=pd.DataFrame(list_of_songs), key="title")
         selected_track_id = selected_track_id = next((song['id'] for song in list_of_songs if song['display_name'] == confirmed_track), None)
+        st.button('Click me', on_click=click_button)
         st.divider()
 
-        model_features = get_model_features(selected_track_id)
+        if st.session_state.clicked:
+            model_features = get_model_features(selected_track_id)
 
-        pickled_model = pickle.load(open("Code/model_spotify_classifier.pkl", 'rb'))
-        pick_pred = pickled_model.predict(np.array(model_features).reshape(1,-1))
+            pickled_model = pickle.load(open("Code/model_spotify_classifier.pkl", 'rb'))
+            pick_pred = pickled_model.predict(np.array(model_features).reshape(1,-1))
 
 
 
-        # st.write(RESULTS[pick_pred])
-        genre = RESULTS[int(pick_pred)]
-        st.success(f'This is the genre for {confirmed_track} !', icon="💡")
-        st.success(genre, icon="✅")
+            # st.write(RESULTS[pick_pred])
+            genre = RESULTS[int(pick_pred)]
+            st.success(f'This is the genre for {confirmed_track} !', icon="💡")
+            st.success(f"The predicted genre is {genre}", icon="✅")
 
     else:   
         st.info('To get the results please enter the song name in the input above', icon="ℹ️")
