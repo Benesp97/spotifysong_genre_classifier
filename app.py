@@ -28,7 +28,7 @@ st.divider()
 
 st.warning(' You have to choose a rock song ! 🤘🎸', icon="⚠️")
 
-input = st.text_input(label="Song name :", value="Stairway To Heaven", placeholder="Stairway To Heaven")
+input = st.text_input(label="Song name :", value="", placeholder="Stairway To Heaven")
 
 try :
     if input != '':
