@@ -22,7 +22,7 @@ st.set_page_config(page_title="Spotify Song Genre Classifier", page_icon=":music
 
 # HEADER SECTION 
 st.header("Spotify Gender Classification Model")
-st.subheader("Let's choose a song and see the model identify a genre")
+st.subheader("Let's choose a rock song and see the model identify a genre")
 st.write("Check out my GitHub repository : https://github.com/Benesp97/spotifysong_genre_classifier")
 st.divider()
 
