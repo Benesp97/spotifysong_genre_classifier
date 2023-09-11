@@ -46,7 +46,7 @@ try :
         st.subheader("Please confirm the track")
         confirmed_track = st.selectbox(label="", options=pd.DataFrame(list_of_songs), key="title")
         selected_track_id = selected_track_id = next((song['id'] for song in list_of_songs if song['display_name'] == confirmed_track), None)
-        st.button('Click me', on_click=click_button)
+        st.button('Click to Confirm', on_click=click_button)
         st.divider()
 
         if st.session_state.clicked:

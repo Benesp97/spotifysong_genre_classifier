@@ -51,8 +51,8 @@ def is_genre_target(genres):
 
 # Define a function to get songs for a given name
 def get_tracks(name):
-    print(name)
-    print(client_id, client_secret)
+    #print(name)
+    #print(client_id, client_secret)
     try:
         response = call_spotify_api(f"https://api.spotify.com/v1/search?q=track:{name}&type=track&offset={0}&limit={LIMIT_PER_PAGE}")
         if response is None:
@@ -80,7 +80,7 @@ def get_tracks(name):
                 }
             
             else:
-                print("It's not a rock song mate ! ")
+                print("It's not a rock song ! ")
 
             # track_features = call_spotify_api(f"https://api.spotify.com/v1/audio-features/{track_id}")
             # if track_features is not None:
@@ -116,3 +116,6 @@ def get_model_features(selected_track_id):
             except Exception as e:
                 print(f"An error occurred while getting songs for id '{selected_track_id}': {str(e)}")
                 return ''
+            
+def get_genre()
+    pass
