@@ -4,12 +4,11 @@ import json
 import os
 import pandas as pd
 from dotenv import load_dotenv
+import streamlit as st
 
-load_dotenv()
 
-client_id = os.getenv("CLIENT_ID")
-client_secret = os.getenv("CLIENT_SECRET")
-
+client_id = st.secrets["CLIENT_ID"]
+client_secret = st.secrets["CLIENT_SECRET"]
 
 
 def get_token():
